@@ -29,7 +29,7 @@ export default defineConfig(({ command }) => {
     // command === 'build'
     return {
       // build specific config
-      base: '/staple-dashboard/',
+      base: '/dashboard/',
       plugins: [react()],
 
     }
