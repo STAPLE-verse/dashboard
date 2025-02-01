@@ -9,7 +9,7 @@ function App() {
   // const apiParam = params.get("api") || "test"; // Default to 'test' if not specified
 
   useEffect(() => {
-    fetch("/test.json")
+    fetch("test.json")
       .then((response) => response.json())
       .then((data) => setData(data as Project))
       .catch((error) => console.error("Error fetching JSON:", error));

@@ -38,6 +38,7 @@ interface TaskLog {
     name: string;
     formId: number;
     version: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     schema: Record<string, any>;
   }
   
