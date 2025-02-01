@@ -1,44 +1,48 @@
 import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { Card } from "./components/Card";
+import { Project } from "./data";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<Project | null>(null);
+
+  const params = new URLSearchParams(window.location.search);
+  const apiParam = params.get("api") || "test"; // Default to 'test' if not specified
 
   useEffect(() => {
     fetch("/test.json")
       .then((response) => response.json())
-      .then((data) => setData(data))
+      .then((data) => setData(data as Project))
       .catch((error) => console.error("Error fetching JSON:", error));
   }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <div>
-        <h2>JSON Data:</h2>
-        <pre>{data ? JSON.stringify(data, null, 2) : "Loading..."}</pre>
-      </div>
+      {data ? (
+        <>
+          <header className="bg-gray-800 text-white p-4 text-center">
+            <h1 className="text-4xl">{data.name}</h1>
+            <sub className="text-xl font-light">STAPLE Project Dashboard</sub>
+          </header>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 sm:gap-y-4 sm:m-4">
+            <Card className="mx-auto max-w-xs">
+              <p className="text-center text-gray-400">Card</p>
+            </Card>
+            <Card className="mx-auto max-w-xs">
+              <p className="text-center text-gray-400">Card</p>
+            </Card>
+            <Card className="mx-auto max-w-xs">
+              <p className="text-center text-gray-400">Card</p>
+            </Card>
+            <Card className="mx-auto max-w-xs">
+              <p className="text-center text-gray-400">Card</p>
+            </Card>
+          </div>
+          <h2>JSON Data:</h2>
+          <pre>{JSON.stringify(data, null, 2)}</pre>
+        </>
+      ) : (
+        "Loading..."
+      )}
     </>
   );
 }
