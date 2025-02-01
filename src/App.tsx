@@ -5,8 +5,8 @@ import { Project } from "./data";
 function App() {
   const [data, setData] = useState<Project | null>(null);
 
-  const params = new URLSearchParams(window.location.search);
-  const apiParam = params.get("api") || "test"; // Default to 'test' if not specified
+  // const params = new URLSearchParams(window.location.search);
+  // const apiParam = params.get("api") || "test"; // Default to 'test' if not specified
 
   useEffect(() => {
     fetch("/test.json")
