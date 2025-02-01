@@ -4,15 +4,16 @@ import { Project } from "./data";
 
 function App() {
   const [data, setData] = useState<Project | null>(null);
-
   // const params = new URLSearchParams(window.location.search);
   // const apiParam = params.get("api") || "test"; // Default to 'test' if not specified
 
   useEffect(() => {
-    fetch("test.json")
-      .then((response) => response.json())
-      .then((data) => setData(data as Project))
-      .catch((error) => console.error("Error fetching JSON:", error));
+    async function fetchData() {
+      const res = await fetch("/test.json");
+      const data = await res.json();
+      setData(data);
+    }
+    fetchData();
   }, []);
 
   return (
