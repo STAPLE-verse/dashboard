@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card } from "./components/Card";
 import { Project } from "./data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
@@ -6,17 +6,24 @@ import Contributors from "./components/Contributors";
 
 function App() {
   const [data, setData] = useState<Project | null>(null);
-  // const params = new URLSearchParams(windowLocation.search);
-  // const apiParam = params.get("api") || "test"; // Default to 'test' if not specified
 
-  useEffect(() => {
-    async function fetchData() {
-      const res = await fetch("test.json");
-      const data = await res.json();
-      setData(data);
-    }
-    fetchData();
-  }, []);
+  const handleFileSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const json = JSON.parse(e.target?.result as string);
+        setData(json);
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    };
+    reader.readAsText(file);
+  };
 
   return (
     <>
@@ -26,6 +33,16 @@ function App() {
             <h1 className="text-4xl">{data.name}</h1>
             <sub className="text-xl font-light">STAPLE Project Dashboard</sub>
           </header>
+          <>
+            <div className="flex justify-center p-4">
+              <input
+                type="file"
+                accept=".json"
+                onChange={handleFileSelect}
+                className="block w-full max-w-xs text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+              />
+            </div>
+          </>
           <Tabs defaultValue="contributors">
             <TabsList className="flex w-full max-w-2xl mx-auto my-4 space-x-2 rounded-xl bg-gray-100 p-1">
               <TabsTrigger
@@ -91,7 +108,26 @@ function App() {
           <pre>{JSON.stringify(data, null, 2)}</pre>
         </>
       ) : (
-        "Loading..."
+        <>
+          <header className="bg-gray-800 text-white p-4 text-center">
+            <sub className="text-xl font-light">STAPLE Project Dashboard</sub>
+          </header>
+          <>
+            <div className="flex justify-center p-4">
+              <input
+                type="file"
+                accept=".json"
+                onChange={handleFileSelect}
+                className="block w-full max-w-xs text-sm text-gray-500
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-full file:border-0
+            file:text-sm file:font-semibold
+            file:bg-indigo-50 file:text-indigo-700
+            hover:file:bg-indigo-100"
+              />
+            </div>
+          </>
+        </>
       )}
     </>
   );
