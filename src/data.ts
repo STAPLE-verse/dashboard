@@ -31,6 +31,7 @@ interface TaskLog {
     description: string;
     taxonomy: string;
     projectId: number | null;
+    users?: [];
   }
   
   interface FormVersion {
@@ -75,6 +76,7 @@ interface TaskLog {
     publisher: string;
     identifier: string;
     tasks: Task[];
+    projectMembers: Role[]
   }
   
   export type { Project, Task, Element, Role, TaskLog, FormVersion };

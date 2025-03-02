@@ -1,6 +1,7 @@
 import { Card } from "./Card";
 import { Project } from "../data";
 import { DonutChart } from "./DonutChart";
+import { TabsContent } from "@radix-ui/react-tabs";
 
 interface ContributorsProps {
   data: Project;
@@ -29,68 +30,65 @@ const Contributors = ({ data }: ContributorsProps) => {
     name,
     amount,
   }));
+  const teamCount = data.projectMembers.filter(
+    (member) => member.name && member.name.startsWith("Team")
+  ).length;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 sm:gap-y-4 sm:m-4">
-      <Card className="mx-auto max-w-xs">
-        <DonutChart
-          className="mx-auto"
-          data={statusData}
-          category="name"
-          value="amount"
-          showLabel={true}
-          label="Task status"
-        />
-      </Card>
-      <Card className="mx-auto max-w-xs">
-        <DonutChart
-          className="mx-auto"
-          data={roleData}
-          category="name"
-          value="amount"
-          showLabel={true}
-          label="Contributions"
-        />
-      </Card>
-      <Card className="mx-auto max-w-xs">
-        <p className="text-center text-gray-400">Card</p>
-      </Card>
-      <Card className="mx-auto max-w-xs">
-        <p className="text-center text-gray-400">Card</p>
-      </Card>
-    </div>
+    <TabsContent value="contributors">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 sm:gap-y-4">
+        {/* Total members */}
+        <Card className="mx-auto max-w-xs">
+          <div className="h-full flex flex-col justify-center">
+            <h3 className="text-lg font-semibold text-center mb-2">Members</h3>
+            <p className="text-3xl font-bold text-center">
+              {data.projectMembers.length}
+            </p>
+          </div>
+        </Card>
+        {/* Teams */}
+        <Card className="mx-auto max-w-xs">
+          <div className="h-full flex flex-col justify-center">
+            <h3 className="text-lg font-semibold text-center mb-2">Teams</h3>
+            <p className="text-3xl font-bold text-center">{teamCount}</p>
+          </div>
+        </Card>
+        {/* Roles */}
+        <Card className="mx-auto max-w-xs">
+          <DonutChart
+            className="mx-auto"
+            data={roleData}
+            category="name"
+            value="amount"
+            showLabel={true}
+            label="Contributions"
+          />
+        </Card>
+        {/* Tasks compmleted */}
+        <Card className="mx-auto max-w-xs">
+          <DonutChart
+            className="mx-auto"
+            data={statusData}
+            category="name"
+            value="amount"
+            showLabel={true}
+            label="Tasks"
+          />
+        </Card>
+        {/* Forms submitted */}
+        <Card className="mx-auto max-w-xs">
+          <DonutChart
+            className="mx-auto"
+            data={statusData}
+            category="name"
+            value="amount"
+            showLabel={true}
+            label="Tasks"
+          />
+        </Card>
+      </div>
+    </TabsContent>
   );
 };
 
 export default Contributors;
-
-// const chartdata = [
-//   {
-//     name: "SolarCells",
-//     amount: 4890,
-//   },
-//   {
-//     name: "Glass",
-//     amount: 2103,
-//   },
-//   {
-//     name: "JunctionBox",
-//     amount: 2050,
-//   },
-//   {
-//     name: "Adhesive",
-//     amount: 1300,
-//   },
-//   {
-//     name: "BackSheet",
-//     amount: 1100,
-//   },
-//   {
-//     name: "Frame",
-//     amount: 700,
-//   },
-//   {
-//     name: "Encapsulant",
-//     amount: 200,
-//   },
-// ];
